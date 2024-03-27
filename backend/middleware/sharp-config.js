@@ -8,7 +8,6 @@ module.exports = (req, res, next) => {
             return next();
         } else {
             const ref = path.parse(req.file.originalname).name;
-            console.log(req.file);
             sharp(req.file.path)
                 .resize(500)
                 .webp({ quality: 80 })
