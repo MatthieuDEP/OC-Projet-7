@@ -1,5 +1,6 @@
 const Book = require('../models/Book');
 const fs = require('fs');
+const path = require('path');
 
 exports.getAllBooks = (req, res, next) => {
     Book.find()
@@ -22,7 +23,7 @@ exports.createBook = (req, res, next) => {
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${path.parse(req.file.originalname).name}.webp`
     });
     book.save()
         .then(() => res.status(201).json({ message: 'Livre enregistré !' }))
@@ -38,7 +39,7 @@ exports.getOneBook = (req, res, next) => {
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${path.parse(req.file.originalname).name}.webp`
     } : { ...req.body };
   
     delete bookObject._userId;
