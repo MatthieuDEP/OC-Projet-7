@@ -1,4 +1,4 @@
-const sharp = require("sharp");
+const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
             sharp(req.file.path)
                 .resize(500)
                 .webp({ quality: 80 })
-                .toFile('images/' + ref + ".webp")
+                .toFile('images/' + ref + '.webp')
                 .then(() => fs.unlink(req.file.path, (e) => console.log(e)));
             next();
         }
@@ -19,4 +19,3 @@ module.exports = (req, res, next) => {
         res.status(401).json({ error });
     }
 };
-
