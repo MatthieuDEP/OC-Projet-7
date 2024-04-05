@@ -1,4 +1,3 @@
-const { Console } = require('console');
 const Book = require('../models/Book');
 const fs = require('fs');
 const path = require('path');
