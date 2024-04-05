@@ -1,3 +1,4 @@
+const { Console } = require('console');
 const Book = require('../models/Book');
 const fs = require('fs');
 const path = require('path');
@@ -48,9 +49,13 @@ exports.modifyBook = (req, res, next) => {
             if (book.userId != req.auth.userId) {
                 res.status(401).json({ message : 'Not authorized' });
             } else {
+                const filename = book.imageUrl.split('/images/')[1];
+                if (req.file && filename != bookObject.imageUrl) {
+                    fs.unlink(`images/${filename}`, (e) => console.log(e))
+                }
                 Book.updateOne({_id: req.params.id}, {...bookObject, _id: req.params.id})
-                .then(() => res.status(200).json({ message : 'Livre modifié!' }))
-                .catch(error => res.status(401).json({ error }));
+                    .then(() => res.status(200).json({ message : 'Livre modifié!' }))
+                    .catch(error => res.status(401).json({ error }));
             }
         })
         .catch((error) => {
